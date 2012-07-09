@@ -86,8 +86,8 @@
     [super viewDidLoad];
     
     //configure carousel
-    carousel.type = iCarouselTypeCoverFlow2;
-    navItem.title = @"CoverFlow2";
+    carousel.type = iCarouselTypeLinear;
+    navItem.title = @"Linear";
 }
 
 - (void)viewDidUnload
