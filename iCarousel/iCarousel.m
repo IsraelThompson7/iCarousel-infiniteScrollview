@@ -170,8 +170,8 @@ CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     scrollSpeed = 1.0f;
     bounceDistance = 1.0f;
     toggle = 0.0f;
-    stopAtItemBoundary = YES;
-    scrollToItemBoundary = YES;
+    stopAtItemBoundary = NO;
+    scrollToItemBoundary = NO;
     useDisplayLink = YES;
     ignorePerpendicularSwipes = YES;
     
