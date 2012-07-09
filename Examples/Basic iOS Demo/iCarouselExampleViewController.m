@@ -27,7 +27,8 @@
 
 @implementation iCarouselExampleViewController
 
-@synthesize carousel;
+@synthesize carousel1;
+@synthesize carousel2;
 @synthesize navItem;
 @synthesize orientationBarItem;
 @synthesize wrapBarItem;
@@ -67,14 +68,15 @@
 {
 	//it's a good idea to set these to nil here to avoid
 	//sending messages to a deallocated viewcontroller
-	carousel.delegate = nil;
-	carousel.dataSource = nil;
+	carousel1.delegate = nil;
+	carousel1.dataSource = nil;
 	
-    [carousel release];
+    [carousel1 release];
     [navItem release];
     [orientationBarItem release];
     [wrapBarItem release];
     [items release];
+    [carousel2 release];
     [super dealloc];
 }
 
@@ -86,14 +88,16 @@
     [super viewDidLoad];
     
     //configure carousel
-    carousel.type = iCarouselTypeLinear;
+    carousel1.type = iCarouselTypeLinear;
+    carousel2.type = iCarouselTypeLinear;
     navItem.title = @"Linear";
 }
 
 - (void)viewDidUnload
 {
+    [self setCarousel2:nil];
     [super viewDidUnload];
-    self.carousel = nil;
+    self.carousel1 = nil;
     self.navItem = nil;
     self.orientationBarItem = nil;
     self.wrapBarItem = nil;
@@ -119,33 +123,33 @@
 {
     //carousel orientation can be animated
     [UIView beginAnimations:nil context:nil];
-    carousel.vertical = !carousel.vertical;
+    carousel1.vertical = !carousel1.vertical;
     [UIView commitAnimations];
     
     //update button
-    orientationBarItem.title = carousel.vertical? @"Vertical": @"Horizontal";
+    orientationBarItem.title = carousel1.vertical? @"Vertical": @"Horizontal";
 }
 
 - (IBAction)toggleWrap
 {
     wrap = !wrap;
     wrapBarItem.title = wrap? @"Wrap: ON": @"Wrap: OFF";
-    [carousel reloadData];
+    [carousel1 reloadData];
 }
 
 - (IBAction)insertItem
 {
-    NSInteger index = MAX(0, carousel.currentItemIndex);
-    [items insertObject:[NSNumber numberWithInt:carousel.numberOfItems] atIndex:index];
-    [carousel insertItemAtIndex:index animated:YES];
+    NSInteger index = MAX(0, carousel1.currentItemIndex);
+    [items insertObject:[NSNumber numberWithInt:carousel1.numberOfItems] atIndex:index];
+    [carousel1 insertItemAtIndex:index animated:YES];
 }
 
 - (IBAction)removeItem
 {
-    if (carousel.numberOfItems > 0)
+    if (carousel1.numberOfItems > 0)
     {
-        NSInteger index = carousel.currentItemIndex;
-        [carousel removeItemAtIndex:index animated:YES];
+        NSInteger index = carousel1.currentItemIndex;
+        [carousel1 removeItemAtIndex:index animated:YES];
         [items removeObjectAtIndex:index];
     }
 }
@@ -162,7 +166,7 @@
         
         //carousel can smoothly animate between types
         [UIView beginAnimations:nil context:nil];
-        carousel.type = type;
+        carousel1.type = type;
         [UIView commitAnimations];
         
         //update title
@@ -192,7 +196,7 @@
 	//create new view if no view is available for recycling
 	if (view == nil)
 	{
-		view = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 200)] autorelease];
+		view = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)] autorelease];
         ((UIImageView*)view).image = [UIImage imageNamed:@"page.png"];
 		label = [[[UILabel alloc] initWithFrame:view.bounds] autorelease];
 		label.backgroundColor = [UIColor clearColor];
@@ -224,7 +228,7 @@
 	//create new view if no view is available for recycling
 	if (view == nil)
 	{
-		view = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 1024, 200)] autorelease];
+		view = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 150)] autorelease];
         ((UIImageView*)view).image = [UIImage imageNamed:@"page.png"];
 		label.backgroundColor = [UIColor clearColor];
 		label.textAlignment = UITextAlignmentCenter;
@@ -258,12 +262,19 @@
 {
     //implement 'flip3D' style carousel
     transform = CATransform3DRotate(transform, M_PI / 8.0f, 0.0f, 1.0f, 0.0f);
-    return CATransform3DTranslate(transform, 0.0f, 0.0f, offset * carousel.itemWidth);
+    return CATransform3DTranslate(transform, 0.0f, 0.0f, offset * carousel1.itemWidth);
 }
 
 - (BOOL)carouselShouldWrap:(iCarousel *)carousel
 {
     return wrap;
 }
-
+- (void)carouselDidScroll:(iCarousel *)carousel
+{
+    if (carousel == carousel1) {
+    NSLog(@"scrollll = %f",carousel1.offsetMultiplier);
+    [carousel2 setContentOffset:CGSizeMake(-carousel1.scrollOffset, 0)];
+//    [carousel2 setViewpointOffset:CGSizeMake(-carousel1.scrollOffset, 0)];
+    }
+}
 @end

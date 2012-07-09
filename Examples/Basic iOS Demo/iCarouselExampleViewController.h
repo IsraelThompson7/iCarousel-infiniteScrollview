@@ -12,7 +12,8 @@
 
 @interface iCarouselExampleViewController : UIViewController <iCarouselDataSource, iCarouselDelegate>
 
-@property (nonatomic, retain) IBOutlet iCarousel *carousel;
+@property (nonatomic, retain) IBOutlet iCarousel *carousel1;
+@property (retain, nonatomic) IBOutlet iCarousel *carousel2;
 @property (nonatomic, retain) IBOutlet UINavigationItem *navItem;
 @property (nonatomic, retain) IBOutlet UIBarItem *orientationBarItem;
 @property (nonatomic, retain) IBOutlet UIBarItem *wrapBarItem;
