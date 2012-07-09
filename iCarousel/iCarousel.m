@@ -39,7 +39,7 @@
 #define SCROLL_DURATION 0.4f
 #define INSERT_DURATION 0.4f
 #define DECELERATE_THRESHOLD 0.1f
-#define SCROLL_SPEED_THRESHOLD 2.0f
+#define SCROLL_SPEED_THRESHOLD 0.1f
 #define SCROLL_DISTANCE_THRESHOLD 0.1f
 #define DECELERATION_MULTIPLIER 30.0f
 #define DEFAULT_FAN_COUNT 10
@@ -166,7 +166,7 @@ CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
     offsetMultiplier = 1.0f;
     contentOffset = CGSizeZero;
 	viewpointOffset = CGSizeZero;
-	shouldWrap = NO;
+	shouldWrap = YES;
     scrollSpeed = 1.0f;
     bounceDistance = 1.0f;
     toggle = 0.0f;
